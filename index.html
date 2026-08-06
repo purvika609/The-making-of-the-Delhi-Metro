@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Making of the Delhi Metro</title>
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" 
+    rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <style>
+    .with-image-bg {
+    position: relative;
+    background-size: cover;
+    background-position: center;  /* add this */
+    margin-bottom: 2em;
+    min-height: 70svh;
+    background-image: url('images/header.png');
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    }
+        body {
+            margin: 0;
+            font-size: 20px;
+            font-family: 'Inter';
+            text-rendering: optimizeLegibility;
+        }
+
+        .content {
+            max-width: 640px;
+            margin: auto;
+        }
+
+        .header {
+            padding: 3em 0;
+        }
+
+        a {
+            font-family: 'Inter';
+            color: #18396C;
+        }
+
+        .footer {
+            background: #E1EEF2;
+            text-align: center;
+            font-size: 0.8em;
+            margin-top: 4em;
+            padding: 4em 0;
+        }
+
+        figure {
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        figcaption {
+            font-size: 14px;
+            font-weight: 300;
+            text-align: left;
+            margin-bottom: 0.5em;
+            padding-bottom: 1em;
+            color: #666;
+        }
+        .header-text {
+        width: 45%;          /* takes up right half */
+        padding: 1em;
+        color: #18396C
+        }
+
+        .header-text h1 {
+        color: #18396C;
+        font-size: 3.4em;
+        margin-top: 0;        /* removes top margin on h1 */
+        margin-bottom: -0.1em;
+        margin-top: 0.2em;
+        text-wrap: balance;
+
+        }
+
+    .header-text p {
+    color: #E3E3E3;
+    font-size: 16px;
+}
+        h1 {
+            font-family: 'Source Serif 4';
+            align-items: right;
+            font-weight: 600 italic;
+            font-size: 100px;
+            line-height: 1.1;
+            color: #18396C
+        }
+        h2{
+            font-family: 'Source Serif 4';
+            color: #3F3F3F;
+            font-size: 20px;
+            font-weight: medium;
+            line-height: 90%;
+            padding-bottom: 1em;
+            margin: 0.5em 0 0.5em 0;
+    
+        }
+
+        iframe,
+        img,
+        video {
+            max-width: 100%;
+        }
+
+        img.full-width {
+    width: 100vw;
+    max-width: 100vw !important;
+    display: block;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+        p {
+            font-family: 'Inter';
+            font-weight: 300;
+            font-size: 18px;
+            line-height: 130%;
+            margin: 0;
+            padding-bottom: 1em;
+            color: #3F3F3F;
+        }
+        p.emphasis {
+            font-family: 'Inter';
+            font-weight: 600;
+            font-size: 22px;
+            line-height: 130%;
+            margin: 0;
+            padding-bottom: 1em;
+            padding-top: 0.5em;
+            color: #18396C;
+        }
+        p2 {
+            font-family: 'Inter';
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 130%;
+            margin: 0;
+            padding-bottom: 1em;
+            color: #3F3F3F;
+        }
+
+        ul {
+            margin: 0;
+            padding-bottom: 1em;
+            line-height: 1.6;
+        }
+
+        iframe {
+            padding-bottom: 1.2em;
+            color: #3F3F3F;
+
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            background: #fffbaf;
+            font-size: 0.85em;
+        }
+
+        .full-width figure {
+            text-align: center;
+        }
+        .mango-full-width {
+        width: 100%;
+    }
+
+        /* margin on mobile */
+        @media (max-width: 640px) {
+            body {
+                font-size: 18px;
+            }
+
+            .content {
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+            }
+        }
+        #scrolly {
+        position: relative;
+        padding: 1rem;
+      }
+
+      .scrolly-overlay {
+        position: relative;
+        padding: 0;
+        max-width: 35rem;
+        margin-left: 2px;
+        margin-right: auto;
+      }
+
+      .sticky-thing {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        z-index: 0;
+        top: 0;
+        height: 100vh;
+        /* Center everything inside */
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .step {
+        margin: 0 auto 2rem auto;
+        margin-bottom: 50rem;
+         background-color: rgba(232, 247, 252, 0.7);
+        text-align: right;
+        transparent: 3;
+        border-radius: 15px;
+        border: 0.5px solid #E3E3E3;
+      }
+
+      .step p {
+        padding: 1rem;
+        font-size: 18px;
+        line-height: 130%;
+        
+      }
+
+      #zoomBox {
+          width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+      
+      .photoDiv {
+        width: 100vw;        
+        height: auto;      
+        display: block;
+        transition:
+        margin 1.5s 0s,
+        transform 2.5s 0s;
+      }
+
+      /* When it's less than 700 pixels wide, do normal scrollytelling */
+      @media only screen and (min-width: 700px) {
+        #scrolly.side-by-side {
+          display: flex;
+        }
+
+        #scrolly.side-by-side > div {
+          flex-basis: 0;
+          flex-grow: 1;
+          flex-shrink: 1;
+          padding: 0.75em;
+        }
+
+        #scrolly.side-by-side .scrolly-overlay {
+          margin-top: 70vh;
+          order: 0;
+          /* Change these to adjust sizing options */
+          min-width: 15rem;
+          max-width: 20rem;
+        }
+
+        #scrolly.side-by-side .sticky-thing {
+          order: 1;
+          flex-grow: 2;
+        }
+      }
+    </style>
+</head>
+
+<body>
+    <div class="header with-image-bg">
+        <div class="header-text">
+    <img src="images/globe.png" alt="A globe icon" width="60" height="60" style="display: block; margin-bottom: -10px;">
+    <h1>The Making of the Delhi Metro</h1>
+            <p class="emphasis">By <a href="https://purvikasharma.com">Purvika Sharma</a></p>
+            <figcaption>Published on 01 July, 2026</figcaption>
+        </div>
+    </div>
+
+    <div class="content">
+         <img src="images/icon.png" alt="A train icon" width="70" height="70" style="display: block; margin: 0 auto;">
+        <h2>From a single line in 2002 to one of the world's largest metro systems.</h2>
+        <p class="subhead">When the Delhi Metro started in 2002, it consisted of a single line and a handful of stations. Today, it is one of the largest metro systems in the world, carrying millions of passengers every day and connecting neighborhoods that once felt hours apart.</p>
+        <p>This project explores the growth of the Delhi Metro-from its first stations to the network that now spans the National Capital Region. It traces how the system expanded, how it changed access across the city, and where it is headed next.</p>
+        
+        <p class="emphasis">Delhi grew really fast</p>    
+        <p>Delhi has always been a city of movement. As its population grew through the 1980s and 1990s, so did the number of vehicles on its roads. Longer commutes, traffic congestion, and air pollution became everyday challenges.</p>
+        <p>Building wider roads could only solve part of the problem. The city needed a high-capacity public transport system that could move large numbers of people quickly and reliably, without depending on road traffic.</p>
+        <p>The Delhi Metro was envisioned as that solution.</p>
+    </div>
+    <figure>
+<img
+    class="full-width"
+    src="images/metro2.jpg" alt="An image of Delhi metro">
+    <div class="content">
+    <figcaption>Source: Econimics Times</figcaption>
+    </div>
+        </figure>
+    
+        <section id="scrolly">
+        <div class="sticky-thing">
+          <div id="zoomBox">
+<!-- Sticky Thing 1 goes below this line -->
+
+            <img id="scrollyPhoto" class="photoDiv" src="images/phase1.jpg" alt="Map of Delhi showing the first phase of the Delhi Metro">
+             </div>
+             <div class="content">
+            <figcaption>Source: Kaggle • Made with QGIS</figcaption>
+            </div>
+<!-- Sticky Thing 1 goes above this line -->     
+        </div>
+
+        <div class="scrolly-overlay">
+          <div class="step" id="step1">
+            <p class="emphasis">Phase I 2002 - 2006</a></p>
+            <p>The first phase marked the beginning of Delhi's metro system. It Covered about 65 km of route length with 59 stations, introducing the first Red, Yellow, and Blue line segments.</p>
+          </div>
+          <div class="step" id="step2">
+            <p class="emphasis">Phase II 2006 - 2011</a></p>
+            <p>Added roughly 125 km and 86 stations, extending lines into neighboring cities like Noida, Gurgaon, and Ghaziabad.</p>
+          </div>
+          <div class="step" id="step3">
+            <p class="emphasis">Phase III 2011 - 2019</p>
+            <p>Contributed an additional 160 km and 109 stations, adding crucial inner and outer ring corridors like the Pink and Magenta lines.</p>
+          </div>
+        </div>
+      </section>
+    <div class="content">
+        <p class="emphasis">Phase IV and V (Current and Upcoming Expansion)</p>   
+<p>Phase IV (Ongoing): Will add about 112 km across multiple new and extended corridors (such as Aerocity-Tughlaqabad). Phase V: Features Phase V(A) and V(B) approvals to link central areas, the Central Vista, and outer suburban pockets like Narela and Najafgarh with new high-density corridors</p>
+        <p class="emphasis">Delhi vs the world</p>   
+        <p>Some networks are older, some are larger, and some carry more passengers. Delhi's network is relatively young, yet it has expanded at an exceptional pace.</p>
+        <p>Talk about how Delhi metro has made it to one of largest metro system in the world.</p>
+        </div>
+        <img
+    class="full-width"
+    src="images/metro.jpg" alt="An image of crowd at a Delhi metro station">
+
+    <div class="content"> 
+        <figcaption>Source: Aljajeera/ Arthur Thouret</figcaption>
+        <p2>Delhi metro was established most recently among the top largest metro systems of the world</a></p>
+        <img
+            src="images/timeline.png" alt="Visualisation of metros operating years from around the world">
+            <figcaption>Source: Metroworld • Made with Figma</figcaption>
+            <p>The Delhi Metro is one of the world's youngest large metro systems, opening in 2002. Despite its relatively recent beginnings, it has expanded at a remarkable pace, matching the scale of networks that have been developing for over a century.</p>
+    <p2>Delhi metro is the 4th longest metro systems of the world (in km)</a></p>
+    <img
+            src="images/chart1.png" alt="Visualisation of metros network length from around the world">
+            <figcaption>Source: metroworld • Made with Figma</figcaption>
+        <p>Everyone has a favourite mango, but that favourite usually depends on where you grew up. The mangoes you ate as a child often become the benchmark for every mango that follows.</p>
+        <p2>Annual Ridership for 2024-25 </p>
+        <img
+                src="images/chat2.png" alt="Visualisation of annual ridership on metros accross the world">
+        <figcaption>Source: Firstpost • Made with Flourish and Adobe Illustrator</figcaption>
+        <p>Some metro systems are longer, while others carry more people. Annual ridership provides a useful way to compare how intensively different networks are used.</p>
+            <p class="emphasis">Delhi Metro Still Growing</a></p>
+            <p>The Delhi Metro continues to evolve. New lines, extensions, and stations are under construction, expanding the network to serve new neighborhoods and accommodate a growing population.</p>
+        
+    </div>
+    <div class="footer">
+        <div class="content">
+        <p2>This project was created during <a href="https://ledeprogram.com">The Lede Program</a> at Columbia's Graduate School of Journalism.
+                You can find the github repo for this project <a href="https://github.com/purvika609/The-great-Indian-Mango-Obsession">here</a>.
+                purvikasharma[at]gmail[com]
+        </div>
+    </div>
+<script>
+    /* Scrollytelling code goes under here */
+
+  // Code for the Photo Div #1 (aka #scrollyPhoto1)
+    
+    // Entering Step One
+  d3.select("#step1").on('stepin',function(e) {
+    console.log("We've arrived at STEP ONE in the photo div")
+    d3.select("#scrollyPhoto").attr("src", "images/phase1.jpg");
+    // d3.select("#scrollyPhoto").style("transform", "scale(2.9) translate(0%, -10%)");
+  })
+
+    // Entering Step Two
+    d3.select("#step2").on('stepin',function(e) {
+    console.log("We've arrived at STEP TWO in the photo div")
+    d3.select("#scrollyPhoto").attr("src", "images/phase2.jpg");
+
+  })
+
+    // Entering Step Three
+    d3.select("#step3").on('stepin',function(e) {
+    console.log("We've arrived at STEP Three in the photo div")
+    d3.select("#scrollyPhoto").attr("src", "images/phase3.jpg");
+  })
+</script>
+
+<!-- LEAVE ALONE, scrolly code goes in the section below -->
+<script>
+    const scroller = scrollama();
+
+	scroller
+		.setup({
+			step: "#scrolly .scrolly-overlay .step",
+			offset: 0.5,
+			debug: false
+		})
+		.onStepEnter(function({ element, index, direction}) {
+			const event = new CustomEvent('stepin', { detail: { direction: direction } })
+			element.dispatchEvent(event);
+		})
+		.onStepExit(function({ element, index, direction }) {
+			const event = new CustomEvent('stepout', { detail: { direction: direction } })
+			element.dispatchEvent(event);
+		});
+
+	window.addEventListener("resize", scroller.resize);
+    </script>
+
+
+<!-- mobile phone warning modal -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const isSmallScreen = window.innerWidth <= 900;
+
+    if (isSmallScreen) {
+      document.getElementById("deviceModal").style.display = "flex";
+    }
+
+    document
+      .getElementById("continueBtn")
+      .addEventListener("click", function () {
+        document.getElementById("deviceModal").style.display = "none";
+      });
+  });
+</script>
+
+  </body>
+</html>
